@@ -1,0 +1,19 @@
+{% extends 'template.html' %}
+
+{% block body %}
+
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">ERROR!,</h1>
+
+      {% if error == "No name" %}
+        <p class="lead">You did not enter a name!</p>
+      {% endif %}
+
+
+
+
+    </div>
+  </div>
+
+{% endblock body %}

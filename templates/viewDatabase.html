@@ -1,0 +1,30 @@
+{% extends 'template.html' %}
+{% block body %}
+
+This is my database!!!~~
+
+<p></p>
+
+<p>Table 'User'(UserID, EmployeeID, email)</p>
+
+{% for users in myUsers %}
+
+<ul>
+  {{users}}
+</ul>
+
+{% endfor %}
+
+<p>Table 'Entry'(Date/Time, Locations Visited, Miles Driven, UserID)</p>
+
+{% for entries in myEntries %}
+
+<ul>
+  {{entries}}
+</ul>
+
+{% endfor %}
+
+
+
+{% endblock %}

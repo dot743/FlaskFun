@@ -4,7 +4,9 @@
 
 <div class="jumbotron jumbotron-fluid">
   <div class="container">
-    <h1 class="display">{{name3}},</h1>
+    <h1 class="display">Name: {{name3}}</h1>
+    <h1 class="display">ID #: {{empID3}}</h1>
+    <h1 class="display">Date: {{date3}}</h1>
     <p class="lead">Submission was a success!!</p>
   </div>
 </div>
@@ -12,7 +14,13 @@
 <div class="jumbotron jumbotron-fluid">
   <div class="container">
     <h1 class="display">You have went to the following locations: </h1>
+    {% for location in locationList %}
+      <li>{{location}}</li>
+    {% endfor %}
     <p class="lead">{{locationList}}</p>
+
+    <p class="lead">You have traveled: <strong>{{ distance }}</strong> miles!</p>
+
   </div>
 </div>
 

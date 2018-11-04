@@ -1,0 +1,49 @@
+{% extends 'template.html' %}
+
+{% block body %}
+
+<form action="{{ url_for('calculatron') }}" method="post">
+  <div class="row">
+    <div class="col">
+      <input type="text" name = firstNum class="form-control" placeholder="First number">
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <input type="text" name = operator class="form-control" placeholder="Operator">
+      </div>
+
+    <div class="col">
+      <input type="text" name = secondNum class="form-control" placeholder="Second number">
+    </div>
+  </div>
+
+
+
+
+
+</form>
+  <div class="container">
+
+    <div class="row">
+
+      <div class="btn pull-left">
+      <button class="btn btn-primary">Submit</button>
+      </div>
+
+    </div>
+
+  </div>
+
+
+<div class="jumbotron">
+  <h5>First number is: {{firstNumEntered}}</h5>
+  <h5>Second number is: {{secondNumEntered}}</h5>
+  <h5>Op is: {{operatorEntered}}</h5>
+  <h5>The result is: {{calculatedResult}}</h5>
+
+  <h6>Test Calculation: {{testCalc1}}</h6>
+</div>
+
+
+{% endblock body %}

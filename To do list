@@ -1,0 +1,18 @@
+Enter name
+-> Store into variable
+
+Enter date
+-> Store into variable
+
+Enter sourceDestination (from dropdown)
+
+Enter endDestination1 (from dropdown)
+
+Enter endDestination2 (from dropdown)
+
+Enter endDestination3 (from dropdown)
+
+for i in numberOfDestinations:
+  calculate each distance between locations
+
+total it and store to dictionary/database with date as key
