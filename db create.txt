@@ -17,9 +17,11 @@ test1 = User.query.filter_by(employeeID='123123').first()
 test1.id
 
 
-entry1 = Entry(locations='Anaheim Hills, Panorama', milesDriven=5.5, user_id=test1.id)
-entry2 = Entry(locations='District Office, Villa', milesDriven=1.7, user_id=test1.id)
-entry3 = Entry(locations='Handy, California', milesDriven=3.5, user_id=test1.id)
+entry1 = Entry(locations=['Anaheim Hills, Panorama'], milesDriven=5.5, user_id=1)
+entry2 = Entry(locations=['District Office, Villa'], milesDriven=1.7, user_id=2)
+entry3 = Entry(locations=['Handy, California'], milesDriven=3.5, user_id=2)
+
+entry = Entry(locations=['Handy', 'California'], milesDriven=3.5, user_id=4, date_entered='2002-03-11')
 
 db.session.add(entry1)
 db.session.add(entry2)
