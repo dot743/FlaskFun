@@ -23,14 +23,16 @@ class User(db.Model):
 
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_entered = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    date_entered = db.Column(db.String, nullable=False)
     locations = db.Column(db.Text, nullable=False)
     milesDriven = db.Column(db.Float, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        return f"Entry('{self.date_entered}', '{self.locations}', '{self.milesDriven}', '{self.user_id}')"
+        return f"Entry('{self.id}', '{self.date_entered}', '{self.locations}', '{self.milesDriven}', '{self.user_id}')"
 
+    def __showMyGuts__(self):
+        return f"Entry('{self.id}', '{self.date_entered}', '{self.locations}', '{self.milesDriven}', '{self.user_id}')"
 
 @app.route('/')
 def index():
@@ -71,7 +73,7 @@ def mileageSubmission():
 def viewMyDatabase():
     userTable = User.query.all()
     userEntry = Entry.query.all()
-    return render_template("viewDatabase.html", myUsers=userTable, myEntries=userEntry)
+    return render_template("viewDatabase.html", myUsers=userTable, myEntries=userEntry, QueryOneTwoThree=1)
 
 @app.route('/<dummy2>')
 def fallback(dummy2):
@@ -111,6 +113,7 @@ def renderEntryToDatabase():
     location_3 = request.form.get("locationThree")
     location_4 = request.form.get("locationFour")
     location_5 = request.form.get("locationFive")
+    entryDate = request.form.get("dateOne")
     locationList.append(location_1)
     locationList.append(location_2)
     locationList.append(location_3)
@@ -122,16 +125,57 @@ def renderEntryToDatabase():
     milesDriven = calculateTotalDisance(locationList)
     userID9 = request.form.get("grab_user_ID")
 
-    addEntry = Entry(locations=locationListAsString, milesDriven=milesDriven, user_id=userID9)
+    addEntry = Entry(locations=locationListAsString, milesDriven=milesDriven, user_id=userID9, date_entered=entryDate)
 
     db.session.add(addEntry)
     db.session.commit()
 
-    return render_template("addEntrySuccess.html", userID8=userID9, locationsWent=locationListAsString, milesDriven=milesDriven)
+    return render_template("addEntrySuccess.html", userID8=userID9, locationsWent=locationListAsString, milesDriven=milesDriven, entryDate=entryDate)
 
 @app.route('/addEntry', methods=["get"])
 def renderEntryPage():
     return render_template("addEntry.html", locationList = findAllLocations())
+
+@app.route('/queryUsers')
+def queryUsers():
+    return render_template("QueryUsers.html")
+
+@app.route('/queryStuff', methods=["post"])
+def queryStuff():
+    queryVar = request.form.get("queryUserOrEntry")
+    if queryVar == "users":
+        return render_template("viewDatabase.html", queryUserOrEntry = 'User')
+    if queryVar == "entries":
+        return render_template("viewDatabase.html", queryUserOrEntry = 'Entry')
+
+@app.route('/queryForReals', methods=["post"])
+def queryForReals():
+    userID = request.form.get("myUserID")
+    empID = request.form.get("myEmpID")
+    myEmail = request.form.get("myEmail")
+    queryVar = request.form.get("queryUserOrEntry")
+    if queryVar == "users":
+        if userID != "":
+            myUserQuery = User.query.filter_by(employeeID = userID).all()
+            return render_template("viewDatabase.html", myUsers=myUserQuery, QueryOneTwoThree = 2)
+        if empID != "":
+            myUserQuery = User.query.filter_by(employeeID = empID).all()
+            return render_template("viewDatabase.html", myUsers=myUserQuery, QueryOneTwoThree = 2)
+        if myEmail != "":
+            myUserQuery = User.query.filter_by(email = myEmail).all()
+            return render_template("viewDatabase.html", myEntries=myUserQuery, QueryOneTwoThree = 2)
+    if queryVar == "entries":
+        if userID != "":
+            mySecondQuery = db.session.query(User, Entry). filter(User.id == Entry.user_id).filter(User.id == userID).all()
+            return render_template("viewDatabase.html", myUsers=mySecondQuery, QueryOneTwoThree = 3)
+        if empID != "":
+            mySecondQuery = db.session.query(User, Entry). filter(User.id == Entry.user_id).filter(User.employeeID == empID).all()
+            return render_template("viewDatabase.html", myUsers=mySecondQuery, QueryOneTwoThree = 3)
+        if myEmail != "":
+            mySecondQuery = db.session.query(User, Entry). filter(User.id == Entry.user_id).filter(User.email == myEmail).all()
+            return render_template("viewDatabase.html", myEntries=mySecondQuery, QueryOneTwoThree = 3)
+
+
 
 @app.route('/birthday')
 def tansbday():

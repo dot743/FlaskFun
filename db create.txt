@@ -1,0 +1,48 @@
+from initialFlask import db, User, Entry
+
+db.create_all()
+
+user1 = User(employeeID='123123', email='tan.nguyen@orangeusd.org', password='hunter2')
+user2 = User(employeeID='111111', email='jack@orangeusd.org', password='hunt512')
+user3 = User(employeeID='555555', email='max@orangeusd.org', password='supermax')
+
+db.session.add(user1)
+db.session.add(user2)
+db.session.add(user3)
+
+db.session.commit()
+
+test1 = User.query.filter_by(employeeID='123123').first()
+
+test1.id
+
+
+entry1 = Entry(locations='Anaheim Hills, Panorama', milesDriven=5.5, user_id=test1.id)
+entry2 = Entry(locations='District Office, Villa', milesDriven=1.7, user_id=test1.id)
+entry3 = Entry(locations='Handy, California', milesDriven=3.5, user_id=test1.id)
+
+db.session.add(entry1)
+db.session.add(entry2)
+db.session.add(entry3)
+
+db.session.commit()
+
+
+
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    employeeID = db.Column(db.String(20), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
+    entry = db.relationship('Entry', backref='author', lazy=True)
+
+    def __repr__(self):
+        return f"User('{self.employeeID}', '{self.email}')"
+
+class Entry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date_entered = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    locations = db.Column(db.String, nullable=False)
+    milesDriven = db.Column(db.Float, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
