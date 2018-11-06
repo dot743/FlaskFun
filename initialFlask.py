@@ -77,7 +77,7 @@ def viewMyDatabase():
 
 @app.route('/<dummy2>')
 def fallback(dummy2):
-    return render_template("home.html", dummyy1 = dummy2)
+    return render_template("home.html", dummyy1 = "THIS IS A DUMMY ROUTE!! STOP GETTING TRICKED")
 
 @app.route('/calculator', methods=["get", "post"])
 def calculatron():
@@ -157,24 +157,42 @@ def queryForReals():
     if queryVar == "users":
         if userID != "":
             myUserQuery = User.query.filter_by(employeeID = userID).all()
-            return render_template("viewDatabase.html", myUsers=myUserQuery, QueryOneTwoThree = 2)
+            return render_template("viewDatabase.html", myUsers=myUserQuery, QueryOneTwoThree = 2, clean = 1)
         if empID != "":
             myUserQuery = User.query.filter_by(employeeID = empID).all()
-            return render_template("viewDatabase.html", myUsers=myUserQuery, QueryOneTwoThree = 2)
+            return render_template("viewDatabase.html", myUsers=myUserQuery, QueryOneTwoThree = 2, clean = 1)
         if myEmail != "":
             myUserQuery = User.query.filter_by(email = myEmail).all()
-            return render_template("viewDatabase.html", myEntries=myUserQuery, QueryOneTwoThree = 2)
+            return render_template("viewDatabase.html", myEntries=myUserQuery, QueryOneTwoThree = 2, clean = 1)
     if queryVar == "entries":
         if userID != "":
-            mySecondQuery = db.session.query(User, Entry). filter(User.id == Entry.user_id).filter(User.id == userID).all()
-            return render_template("viewDatabase.html", myUsers=mySecondQuery, QueryOneTwoThree = 3)
+            mySecondQuery = db.session.query(User, Entry).filter(User.id == Entry.user_id).filter(User.id == userID).all()
+            return render_template("viewDatabase.html", myUsers=mySecondQuery, QueryOneTwoThree = 3, clean = 1)
         if empID != "":
-            mySecondQuery = db.session.query(User, Entry). filter(User.id == Entry.user_id).filter(User.employeeID == empID).all()
-            return render_template("viewDatabase.html", myUsers=mySecondQuery, QueryOneTwoThree = 3)
+            mySecondQuery = db.session.query(User, Entry).filter(User.id == Entry.user_id).filter(User.employeeID == empID).all()
+            return render_template("viewDatabase.html", myUsers=mySecondQuery, QueryOneTwoThree = 3, clean = 1)
         if myEmail != "":
-            mySecondQuery = db.session.query(User, Entry). filter(User.id == Entry.user_id).filter(User.email == myEmail).all()
-            return render_template("viewDatabase.html", myEntries=mySecondQuery, QueryOneTwoThree = 3)
+            mySecondQuery = db.session.query(User, Entry).filter(User.id == Entry.user_id).filter(User.email == myEmail).all()
+            return render_template("viewDatabase.html", myEntries=mySecondQuery, QueryOneTwoThree = 3, clean = 1)
 
+@app.route('/cleanUpForPrinting', methods=["post"])
+def clean_Up():
+    userID = request.form.get("myUserID")
+    empID = request.form.get("myEmpID")
+    myEmail = request.form.get("myEmail")
+
+    myPrintQuery = db.session.query(Entry.locations).filter(Entry.user_id == 2).all()
+    # myPrintQuery = db.session.query(User, Entry).filter(User.id == Entry.user_id).filter(User.id == userID).all()
+
+    listOfLocationsTraveled = convertLocationQueryToLocationList(myPrintQuery)
+
+    print(listOfLocationsTraveled)
+
+    return render_template("printMileage.html", hideOptions=1, printThis=myPrintQuery, locations=listOfLocationsTraveled)
+
+@app.route('/cleanUpForPrinting', methods=["get"])
+def printMileage():
+    return render_template("printMileage.html")
 
 
 @app.route('/birthday')

@@ -40,7 +40,7 @@ P.S, this is my 'Entry' database
 {% endfor %}
 
 <div class="buttons">
-  <form action="{{ url_for('queryStuff') }}" method="post">
+  <form id=1 action="{{ url_for('queryStuff') }}" method="post">
     <button type="submit" name=queryUserOrEntry value="users" class="btn btn-primary btn-lg btn-block">Query Users</button>
   </form>
 </div>
@@ -53,7 +53,7 @@ P.S, this is my 'Entry' database
 
 {% if queryUserOrEntry == 'User' %}
 
-<form action="{{ url_for('queryForReals') }}" method="post">
+<form id=2 action="{{ url_for('queryForReals') }}" method="post">
 
   <div class="form-group row">
     <label for="formGroupExampleInput" class="col-sm-2 col-form-label">User ID</label>
@@ -87,7 +87,7 @@ P.S, this is my 'Entry' database
 
 {% elif queryUserOrEntry == 'Entry' %}
 
-<form action="{{ url_for('queryForReals') }}" method="post">
+<form id=3 action="{{ url_for('queryForReals') }}" method="post">
 
   <div class="form-group row">
     <label for="formGroupExampleInput" class="col-sm-2 col-form-label">User ID</label>
@@ -109,16 +109,27 @@ P.S, this is my 'Entry' database
       <input type="email" class="form-control" name="myEmail" placeholder="Enter ID" value="tan@new.win">
     </div>
   </div>
-<div class="row">
+
   <div class="row">
-    <div class="row">
-      <div class="btn pull-left">
-      <button type="submit" name=queryUserOrEntry value="entries" class="btn btn-primary">Submit</button>
-    </div>
+    <div class="btn pull-left">
+    <button type="submit" name=queryUserOrEntry value="entries" class="btn btn-primary">Submit</button>
   </div>
-</div>
+
+
+
 </form>
 
 {% endif %}
 
+{% endblock %}
+
+
+{% block body2 %}
+{% if clean == 1 %}
+
+  <a href="{{url_for('printMileage')}}">
+    <button type="button" class="btn btn-primary my-3" name="clean_Up" value="cleanUp">Clean up for printing!</button>
+  </a>
+
+{% endif %}
 {% endblock %}
