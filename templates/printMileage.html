@@ -37,9 +37,9 @@
 {% endif %}
 
 
-{% for eachEntry in locations %}
+{% for i in range(entries) %}
 
-<li>{{eachEntry}}</li>
+<li>{{dates[i]}} | {{locations[i]}} | {{miles[i]}}</li>
 
 {% endfor %}
 

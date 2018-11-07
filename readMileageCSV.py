@@ -125,3 +125,31 @@ def convertLocationQueryToLocationList(myPrintQuery):
 
 
 	return fixedListFinal2
+
+# Converts date query to date
+def convertDateQueryToDateList(query):
+	listUpdated = []
+	for eachItem in query:
+		eachEntryFixed1 = str(eachItem).replace("(", "")
+		eachEntryFixed2 = eachEntryFixed1.replace(")", "")
+		eachEntryFixed3 = eachEntryFixed2.replace(",", "")
+		eachEntryFixed4 = eachEntryFixed3.replace("(", "")
+		eachEntryFixed5 = eachEntryFixed4.lstrip()
+		eachEntryFixed6 = eachEntryFixed5.replace("\'", "")
+
+		listUpdated.append(eachEntryFixed6[:-1])
+	return listUpdated
+
+# Converts Miles Driven query to list
+def convertMilesQueryToMilesList(query):
+	listUpdated = []
+	for eachItem in query:
+		eachEntryFixed1 = str(eachItem).replace("(", "")
+		eachEntryFixed2 = eachEntryFixed1.replace(")", "")
+		eachEntryFixed3 = eachEntryFixed2.replace(",", "")
+		eachEntryFixed4 = eachEntryFixed3.replace("(", "")
+		eachEntryFixed5 = eachEntryFixed4.lstrip()
+		eachEntryFixed6 = eachEntryFixed5.replace("\'", "")
+
+		listUpdated.append(float(eachEntryFixed6))
+	return listUpdated

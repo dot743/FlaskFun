@@ -66,4 +66,22 @@ print(listOfLocationsTraveled)
 
 print(len(listOfLocationsTraveled))
 
+def convertMilesQueryToMilesList(query):
+	listUpdated = []
+	for eachItem in query:
+		eachEntryFixed1 = str(eachItem).replace("(", "")
+		eachEntryFixed2 = eachEntryFixed1.replace(")", "")
+		eachEntryFixed3 = eachEntryFixed2.replace(",", "")
+		eachEntryFixed4 = eachEntryFixed3.replace("(", "")
+		eachEntryFixed5 = eachEntryFixed4.lstrip()
+		eachEntryFixed6 = eachEntryFixed5.replace("\'", "")
 
+		listUpdated.append(float(eachEntryFixed6))
+	return listUpdated
+
+
+myDatePrintQuery = db.session.query(Entry.milesDriven).filter(Entry.user_id == 2).all()
+
+print(myDatePrintQuery)
+
+print(convertMilesQueryToMilesList(myDatePrintQuery))

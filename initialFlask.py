@@ -181,14 +181,24 @@ def clean_Up():
     empID = request.form.get("myEmpID")
     myEmail = request.form.get("myEmail")
 
-    myPrintQuery = db.session.query(Entry.locations).filter(Entry.user_id == 2).all()
+    myLocationPrintQuery = db.session.query(Entry.locations).filter(Entry.user_id == userID).all()
     # myPrintQuery = db.session.query(User, Entry).filter(User.id == Entry.user_id).filter(User.id == userID).all()
+    myDatePrintQuery = db.session.query(Entry.date_entered).filter(Entry.user_id == userID).all()
+    myMilesPrintQuery = db.session.query(Entry.milesDriven).filter(Entry.user_id == userID).all()
 
-    listOfLocationsTraveled = convertLocationQueryToLocationList(myPrintQuery)
 
-    print(listOfLocationsTraveled)
+    listOfLocationsTraveled = convertLocationQueryToLocationList(myLocationPrintQuery)
 
-    return render_template("printMileage.html", hideOptions=1, printThis=myPrintQuery, locations=listOfLocationsTraveled)
+    listOfDates = convertDateQueryToDateList(myDatePrintQuery)
+
+    listOfMilesDriven = convertMilesQueryToMilesList(myMilesPrintQuery)
+
+    numberOfEntries = len(listOfLocationsTraveled)
+
+    for i in range(len(myDatePrintQuery)):
+        print("Entry #{}".format(i) + str(myDatePrintQuery[i]) + " and " + str(myMilesPrintQuery[i]))
+
+    return render_template("printMileage.html", hideOptions=1, printThis=myLocationPrintQuery, entries=numberOfEntries, locations=listOfLocationsTraveled, dates=listOfDates, miles=listOfMilesDriven)
 
 @app.route('/cleanUpForPrinting', methods=["get"])
 def printMileage():
