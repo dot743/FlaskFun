@@ -1,0 +1,14 @@
+{% extends 'template.html' %}
+{% block body %}
+
+
+{% for i in range(entries) %}
+
+<li>{{dates[i]}} | {{miles[i]}} | {{locations[i]}}</li>
+
+<p></p>
+
+{% endfor %}
+
+
+{% endblock %}

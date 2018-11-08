@@ -137,7 +137,7 @@ def convertDateQueryToDateList(query):
 		eachEntryFixed5 = eachEntryFixed4.lstrip()
 		eachEntryFixed6 = eachEntryFixed5.replace("\'", "")
 
-		listUpdated.append(eachEntryFixed6[:-1])
+		listUpdated.append(eachEntryFixed6)
 	return listUpdated
 
 # Converts Miles Driven query to list

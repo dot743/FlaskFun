@@ -37,9 +37,11 @@
 {% endif %}
 
 
-{% for i in range(entries) %}
+{% for i in range(5) %}
 
-<li>{{dates[i]}} | {{locations[i]}} | {{miles[i]}}</li>
+<li>{{miles[i]}} | {{locations[i]}} | {{dates[i]}}</li>
+
+<p></p>
 
 {% endfor %}
 

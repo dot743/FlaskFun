@@ -181,10 +181,10 @@ def clean_Up():
     empID = request.form.get("myEmpID")
     myEmail = request.form.get("myEmail")
 
-    myLocationPrintQuery = db.session.query(Entry.locations).filter(Entry.user_id == userID).all()
+    myLocationPrintQuery = db.session.query(Entry.locations).filter(Entry.user_id == 2).all()
     # myPrintQuery = db.session.query(User, Entry).filter(User.id == Entry.user_id).filter(User.id == userID).all()
-    myDatePrintQuery = db.session.query(Entry.date_entered).filter(Entry.user_id == userID).all()
-    myMilesPrintQuery = db.session.query(Entry.milesDriven).filter(Entry.user_id == userID).all()
+    myDatePrintQuery = db.session.query(Entry.date_entered).filter(Entry.user_id == 2).all()
+    myMilesPrintQuery = db.session.query(Entry.milesDriven).filter(Entry.user_id == 2).all()
 
 
     listOfLocationsTraveled = convertLocationQueryToLocationList(myLocationPrintQuery)
@@ -196,13 +196,38 @@ def clean_Up():
     numberOfEntries = len(listOfLocationsTraveled)
 
     for i in range(len(myDatePrintQuery)):
-        print("Entry #{}".format(i) + str(myDatePrintQuery[i]) + " and " + str(myMilesPrintQuery[i]))
+        print("Entry #{} ".format(i) + str(listOfDates[i]) + " and " + str(listOfMilesDriven[i]))
 
-    return render_template("printMileage.html", hideOptions=1, printThis=myLocationPrintQuery, entries=numberOfEntries, locations=listOfLocationsTraveled, dates=listOfDates, miles=listOfMilesDriven)
+    return render_template("printSuccess.html", hideOptions=1, printThis=myLocationPrintQuery, entries=numberOfEntries, locations=listOfLocationsTraveled, dates=listOfDates, miles=listOfMilesDriven)
 
 @app.route('/cleanUpForPrinting', methods=["get"])
 def printMileage():
     return render_template("printMileage.html")
+
+@app.route('/printSuccess', methods=["get", "post"])
+def printSuccess():
+    userID = request.form.get("myUserID")
+    empID = request.form.get("myEmpID")
+    myEmail = request.form.get("myEmail")
+
+    myLocationPrintQuery = db.session.query(Entry.locations).filter(Entry.user_id == 1).all()
+    # myPrintQuery = db.session.query(User, Entry).filter(User.id == Entry.user_id).filter(User.id == userID).all()
+    myDatePrintQuery = db.session.query(Entry.date_entered).filter(Entry.user_id == 1).all()
+    myMilesPrintQuery = db.session.query(Entry.milesDriven).filter(Entry.user_id == 1).all()
+
+
+    listOfLocationsTraveled = convertLocationQueryToLocationList(myLocationPrintQuery)
+
+    listOfDates = convertDateQueryToDateList(myDatePrintQuery)
+
+    listOfMilesDriven = convertMilesQueryToMilesList(myMilesPrintQuery)
+
+    numberOfEntries = len(listOfLocationsTraveled)
+
+    for i in range(len(myDatePrintQuery)):
+        print("Entry #{} ".format(i) + str(listOfDates[i]) + " and " + str(listOfMilesDriven[i]))
+
+    return render_template("printSuccess.html", hideOptions=1, printThis=myLocationPrintQuery, entries=numberOfEntries, locations=listOfLocationsTraveled, dates=listOfDates, miles=listOfMilesDriven)
 
 
 @app.route('/birthday')
